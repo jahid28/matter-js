@@ -25,8 +25,10 @@ var render = Render.create({
   engine: engine,
   options: {
     background: "none",
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 800,
+    height: 600,
+    // width: window.innerWidth,
+    // height: window.innerHeight,
     wireframes: false,
     // showVelocity: true,
     // showAngleIndicator: true,
@@ -40,21 +42,21 @@ var runner = Runner.create();
 Runner.run(runner, engine);
 
 // add bodies
-var boxA = Bodies.rectangle(400, 200, 80, 80, {
+var boxA = Bodies.rectangle(400, 200, 64, 64, {
   render: {
-    // sprite: {
-      // texture: "test.jpg",
-    // },
-    fillStyle:"gray"
+    sprite: {
+      texture: "box.png",
+    },
+    // fillStyle:"gray"
   },
 });
 var boxB = Bodies.rectangle(400, 200, 80, 80);
-var stack = [boxA, boxB];
-boxA.collisionFilter = {
-  category: 0x1110,
-  mask: 0xfffffff,
-  group: 1,
-};
+// var stack = [boxA, boxB];
+// boxA.collisionFilter = {
+//   category: 0x1110,
+//   mask: 0xfffffff,
+//   group: 1,
+// };
 let pp = document.getElementById("pp");
 
 // setInterval(() => {
@@ -99,19 +101,22 @@ let pp = document.getElementById("pp");
 //       });
 //   }
 // });
-
-function svg() {
-  const paths = document.querySelectorAll(".svg");
-  paths.forEach((path, i) => {
+let svgBody
+// function svg() {
+  const path = document.getElementById("svg");
+  // paths.forEach((path, i) => {
     let vertices=Svg.pathToVertices(path)
     // let vertices = svg.pathToVertices(path);
-    let scaleFactor = (document.getElementById("canvas").clientWidth * .3)/100;
-
+    let scaleFactor = (800 * .3)/100;
+    // let scaleFactor = (document.getElementById("canvas").clientWidth * .3)/100;
+    // 400, 200, 64, 64
     vertices=Vertices.scale(vertices,scaleFactor,scaleFactor)
-    let svgBody=Bodies.fromVertices(
-      i*100 + 200,
-      0,
-      [vertices], {
+    console.log(vertices)
+     svgBody=Bodies.fromVertices(
+     100,//x
+      100,//y
+      [vertices],
+       {
         render: {
           // sprite: {
           //   texture: "test.jpg",
@@ -123,24 +128,32 @@ function svg() {
    
     // console.log(path.id)
 
-    Composite.add(world,svgBody)
-  });
+    // Composite.add(world,svgBody)
+  // });
 
-}
+// }
 
-svg()
+// svg()
 
-Composite.add(world, stack);
+// Composite.add(world, stack);
+var offset = 10,
+options = { 
+    isStatic: true
+};
 
 Composite.add(world, [
   // walls
-  Bodies.rectangle(window.innerWidth / 2, 0, window.innerWidth, 50, {
-    isStatic: true,
-  }),
-  Bodies.rectangle(400, 600, 800, 50, { isStatic: true }),
-  Bodies.rectangle(800, 300, 50, 600, { isStatic: true }),
-  Bodies.rectangle(0, 300, 50, 600, { isStatic: true }),
+  Bodies.rectangle(400, -offset, 800.5 + 2 * offset, 50.5, options),
+  Bodies.rectangle(400, 600 + offset, 800.5 + 2 * offset, 50.5, options),
+  Bodies.rectangle(800 + offset, 300, 50.5, 600.5 + 2 * offset, options),
+  Bodies.rectangle(-offset, 300, 50.5, 600.5 + 2 * offset, options),
+  svgBody,
+  boxA,
+  boxB
 ]);
+
+
+// svgBody[1].position.y=10
 
 // add mouse control
 var mouse = Mouse.create(render.canvas),
