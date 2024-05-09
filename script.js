@@ -1,5 +1,3 @@
-// const { Vertices } = require("matter-js");
-
 var Engine = Matter.Engine,
   Render = Matter.Render,
   Runner = Matter.Runner,
@@ -8,18 +6,17 @@ var Engine = Matter.Engine,
   MouseConstraint = Matter.MouseConstraint,
   Mouse = Matter.Mouse,
   Composite = Matter.Composite,
-  Body=Matter.Body,
-  Svg=Matter.Svg,
-  Vector=Matter.Vector,
-  Vertices=Matter.Vertices,
+  Body = Matter.Body,
+  Svg = Matter.Svg,
+  Vector = Matter.Vector,
+  Vertices = Matter.Vertices,
   Bodies = Matter.Bodies;
 
-// create engine
 var engine = Engine.create(),
   world = engine.world;
 
-  engine.gravity.y = 1;
-// create renderer
+engine.gravity.y = 1;
+
 var render = Render.create({
   element: document.getElementById("canvas"),
   engine: engine,
@@ -37,11 +34,9 @@ var render = Render.create({
 
 Render.run(render);
 
-// create runner
 var runner = Runner.create();
 Runner.run(runner, engine);
 
-// add bodies
 var boxA = Bodies.rectangle(400, 200, 64, 64, {
   render: {
     sprite: {
@@ -101,35 +96,37 @@ let pp = document.getElementById("pp");
 //       });
 //   }
 // });
-let svgBody
-// function svg() {
-  const path = document.getElementById("svg");
-  // paths.forEach((path, i) => {
-    let vertices=Svg.pathToVertices(path)
-    // let vertices = svg.pathToVertices(path);
-    let scaleFactor = (800 * .3)/100;
-    // let scaleFactor = (document.getElementById("canvas").clientWidth * .3)/100;
-    // 400, 200, 64, 64
-    vertices=Vertices.scale(vertices,scaleFactor,scaleFactor)
-    console.log(vertices)
-     svgBody=Bodies.fromVertices(
-     100,//x
-      100,//y
-      [vertices],
-       {
-        render: {
-          // sprite: {
-          //   texture: "test.jpg",
-          // },
-          fillStyle:"gray"
-        },
-      }
-    )
-   
-    // console.log(path.id)
 
-    // Composite.add(world,svgBody)
-  // });
+
+let svgBody;
+// function svg() {
+const path = document.getElementById("svg");
+// paths.forEach((path, i) => {
+let vertices = Svg.pathToVertices(path);
+// let vertices = svg.pathToVertices(path);
+let scaleFactor = (800 * 0.3) / 100;
+// let scaleFactor = (document.getElementById("canvas").clientWidth * .3)/100;
+// 400, 200, 64, 64
+vertices = Vertices.scale(vertices, scaleFactor, scaleFactor);
+console.log(vertices);
+svgBody = Bodies.fromVertices(
+  300, //x
+  200, //y
+  [vertices],
+  {
+    render: {
+      // sprite: {
+      //   texture: "test.jpg",
+      // },
+      fillStyle: "gray",
+    },
+  }
+);
+
+// console.log(path.id)
+
+// Composite.add(world,svgBody)
+// });
 
 // }
 
@@ -137,9 +134,9 @@ let svgBody
 
 // Composite.add(world, stack);
 var offset = 10,
-options = { 
-    isStatic: true
-};
+  options = {
+    isStatic: true,
+  };
 
 Composite.add(world, [
   // walls
@@ -149,9 +146,8 @@ Composite.add(world, [
   Bodies.rectangle(-offset, 300, 50.5, 600.5 + 2 * offset, options),
   svgBody,
   boxA,
-  boxB
+  boxB,
 ]);
-
 
 // svgBody[1].position.y=10
 
